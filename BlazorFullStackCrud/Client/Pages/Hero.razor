@@ -20,11 +20,11 @@ else
         <InputText id="firstname" @bind-Value="hero.FirstName" class="form-control"></InputText>
     </div>
     <div>
-        <label for="lastname">First Name</label>
+        <label for="lastname">Last Name</label>
         <InputText id="lastname" @bind-Value="hero.LastName" class="form-control"></InputText>
     </div>
     <div>
-        <label for="heroname">First Name</label>
+        <label for="heroname">Hero Name</label>
         <InputText id="heroname" @bind-Value="hero.HeroName" class="form-control"></InputText>
     </div>
     <div>
@@ -36,7 +36,9 @@ else
             }
         </InputSelect>
     </div>
+    <br />
     <button type="submit" class="btn btn-primary">@btnText</button>
+    <button type="button" class="btn btn-danger" @onclick="DeleteHero"> Delete Hero</button>
 
 </EditForm>
 
@@ -58,7 +60,8 @@ else
     {
         if (Id == null)
         {
-            //create a new hero
+            hero.Comic = SuperHeroService.Comics[0];
+            hero.ComicId = hero.Comic.Id;
         }
         else
         {
@@ -68,6 +71,18 @@ else
 
     async Task HandleSubmit()
     {
-        
+        if (Id == null)
+        {
+            await SuperHeroService.CreateHero(hero);
+        }
+        else
+        {
+            await SuperHeroService.UpdateHero(hero);
+        }
+    }
+
+    async Task DeleteHero()
+    {
+        await SuperHeroService.DeleteHero(hero.Id);
     }
 }
